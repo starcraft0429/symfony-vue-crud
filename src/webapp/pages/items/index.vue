@@ -54,6 +54,15 @@
             <b-icon icon="pencil"></b-icon>
           </b-button>
         </template>
+        <template #cell(categories)="data">
+          <b-badge
+            v-for="(category, index) in data.item.categories"
+            :key="index"
+            pill
+            variant="info"
+            >{{ category.label }}</b-badge
+          >
+        </template>
         <template #table-busy>
           <div class="text-center my-2">
             <b-spinner class="align-middle" variant="primary"></b-spinner>
@@ -111,6 +120,11 @@ export default {
           key: 'label',
           label: 'label',
           sortable: true,
+        },
+        {
+          key: 'categories',
+          label: 'categories',
+          sortable: false,
         },
         {
           key: 'actions',
