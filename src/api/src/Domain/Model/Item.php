@@ -9,9 +9,15 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseItem;
+use TheCodingMachine\GraphQLite\Annotations\SourceField;
+use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
  * The Item class maps the 'items' table in database.
+ * 
+ * @Type
+ * @SourceField(name="id", outputType="ID")
+ * @SourceField(name="label")
  */
 class Item extends BaseItem
 {
