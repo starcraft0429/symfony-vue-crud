@@ -56,18 +56,13 @@ export default {
       this.displayGlobalOverlay()
 
       try {
-        const result = await this.$graphql.request(CreateCategoryMutation, {
+        await this.$graphql.request(CreateCategoryMutation, {
           label: this.form.label,
         })
 
         this.genericSuccessToast()
 
-        this.$router.push(
-          this.localePath({
-            name: 'category-id',
-            params: { id: result.createCategory.id },
-          })
-        )
+        this.$router.push(this.localePath({ name: 'category' }))
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {

@@ -10,7 +10,7 @@
           v-model="filters.search"
           class="mb-2 mr-sm-2 mb-sm-0"
           style="min-width: 50%"
-          type="text"
+          type="search"
           :placeholder="$t('common.search')"
           autofocus
           trim
@@ -52,14 +52,6 @@
           >
             <b-icon icon="pencil"></b-icon>
           </b-button>
-          <b-button
-            size="sm"
-            variant="danger"
-            :aria-label="$t('common.delete')"
-            @click="onDelete(data.item.id)"
-          >
-            <b-icon icon="trash"></b-icon>
-          </b-button>
         </template>
         <template #table-busy>
           <div class="text-center my-2">
@@ -84,7 +76,6 @@ import { Form } from '@/mixins/form'
 import { List, defaultItemsPerPage, calculateOffset } from '@/mixins/list'
 import { Roles } from '@/mixins/roles'
 import { CategoriesQuery } from '@/graphql/categories/categories.query'
-import { DeleteCategoryMutation } from '@/graphql/categories/delete_category.mutation'
 import { GlobalOverlay } from '@/mixins/global-overlay'
 import { GenericToast } from '@/mixins/generic-toast'
 
@@ -143,20 +134,6 @@ export default {
         this.isLoading = false
       } catch (e) {
         this.$nuxt.error(e)
-      }
-    },
-    async onDelete(id) {
-      this.displayGlobalOverlay()
-
-      try {
-        await this.$graphql.request(DeleteCategoryMutation, { id })
-
-        this.genericSuccessToast()
-        this.$router.push(this.localePath({ name: 'category' }))
-      } catch (e) {
-        this.$nuxt.error(e)
-      } finally {
-        this.hideGlobalOverlay()
       }
     },
   },

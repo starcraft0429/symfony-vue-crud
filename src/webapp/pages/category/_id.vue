@@ -28,6 +28,14 @@
         <b-button type="submit" variant="primary">
           {{ $t('common.update') }}
         </b-button>
+        <b-button
+          size="sm"
+          variant="danger"
+          :aria-label="$t('common.delete')"
+          @click="onDelete()"
+        >
+          <b-icon icon="trash"></b-icon>
+        </b-button>
       </b-form>
     </b-card>
   </div>
@@ -44,6 +52,7 @@ import { Auth } from '@/mixins/auth'
 import { Images } from '@/mixins/images'
 import { GenericToast } from '@/mixins/generic-toast'
 import ErrorsList from '@/components/forms/ErrorsList'
+import { DeleteCategoryMutation } from '@/graphql/categories/delete_category.mutation'
 
 export default {
   components: { ErrorsList },
@@ -84,6 +93,22 @@ export default {
         this.genericSuccessToast()
       } catch (e) {
         this.hydrateFormErrors(e)
+      } finally {
+        this.hideGlobalOverlay()
+      }
+    },
+    async onDelete(id) {
+      this.displayGlobalOverlay()
+
+      try {
+        await this.$graphql.request(DeleteCategoryMutation, {
+          id: this.$route.params.id,
+        })
+
+        this.genericSuccessToast()
+        this.$router.push(this.localePath({ name: 'category' }))
+      } catch (e) {
+        this.$nuxt.error(e)
       } finally {
         this.hideGlobalOverlay()
       }
