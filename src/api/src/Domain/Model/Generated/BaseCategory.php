@@ -82,13 +82,82 @@ abstract class BaseCategory extends \TheCodingMachine\TDBM\AbstractTDBMObject im
     }
 
     /**
-     * Returns the list of Item pointing to this bean via the category_id column.
+     * Returns the list of Item associated to this bean via the categories_items pivot table.
      *
-     * @return Item[]|\TheCodingMachine\TDBM\AlterableResultIterator
+     * @return \App\Domain\Model\Item[]
      */
-    public function getItems() : \TheCodingMachine\TDBM\AlterableResultIterator
+    public function getItems() : array
     {
-        return $this->retrieveManyToOneRelationshipsStorage('items', 'from__category_id__to__table__categories__columns__id', ['items.category_id' => $this->get('id', 'categories')]);
+        return $this->_getRelationships('categories_items.category_id');
+    }
+
+    /**
+     * Adds a relationship with Item associated to this bean via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Item $item
+     */
+    public function addItem(\App\Domain\Model\Item $item) : void
+    {
+        $this->addRelationship('categories_items', $item);
+    }
+
+    /**
+     * Deletes the relationship with Item associated to this bean via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Item $item
+     */
+    public function removeItem(\App\Domain\Model\Item $item) : void
+    {
+        $this->_removeRelationship('categories_items', $item);
+    }
+
+    /**
+     * Returns whether this bean is associated with Item via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Item $item
+     * @return bool
+     */
+    public function hasItem(\App\Domain\Model\Item $item) : bool
+    {
+        return $this->hasRelationship('categories_items.category_id', $item);
+    }
+
+    /**
+     * Sets all relationships with Item associated to this bean via the categories_items pivot table.
+     * Exiting relationships will be removed and replaced by the provided relationships.
+     *
+     * @param \App\Domain\Model\Item[] $items
+     * @return void
+     */
+    public function setItems(array $items) : void
+    {
+        $this->setRelationships('categories_items.category_id', $items);
+    }
+
+    /**
+     * Get the paths used for many to many relationships methods.
+     *
+     * @internal
+     */
+    public function _getManyToManyRelationshipDescriptor(string $pathKey) : \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor
+    {
+        switch ($pathKey) {
+            case 'categories_items.category_id':
+                return new \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor('items', 'categories_items', ['id'], ['item_id'], ['category_id']);
+            default:
+                return parent::_getManyToManyRelationshipDescriptor($pathKey);
+        }
+    }
+
+    /**
+     * Returns the list of keys supported for many to many relationships
+     *
+     * @internal
+     * @return string[]
+     */
+    public function _getManyToManyRelationshipDescriptorKeys() : array
+    {
+        return array_merge(parent::_getManyToManyRelationshipDescriptorKeys(), ['categories_items.category_id']);
     }
 
     /**
@@ -119,6 +188,11 @@ abstract class BaseCategory extends \TheCodingMachine\TDBM\AbstractTDBMObject im
         $array = [];
         $array['id'] = $this->getId();
         $array['label'] = $this->getLabel();
+        if (!$stopRecursion) {
+            $array['items'] = array_map(function (Item $object) {
+                return $object->jsonSerialize(true);
+            }, $this->getItems());
+        };
         return $array;
     }
 
@@ -135,6 +209,8 @@ abstract class BaseCategory extends \TheCodingMachine\TDBM\AbstractTDBMObject im
 
     public function __clone()
     {
+        $this->getItems();
+
         parent::__clone();
     }
 }

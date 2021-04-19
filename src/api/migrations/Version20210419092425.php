@@ -29,8 +29,9 @@ final class Version20210419092425 extends AbstractMigration
             ->column('label')->string(255)->notNull();
 
         $db->table('items')->id()
-            ->column('label')->string(255)->notNull()
-            ->column('category_id')->references('categories')->notNull();
+            ->column('label')->string(255)->notNull();
+            
+        $db->junctionTable('categories', 'items');
     }
 
     public function down(Schema $schema): void

@@ -33,13 +33,11 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     /**
      * The constructor takes all compulsory arguments.
      *
-     * @param \App\Domain\Model\Category $category
      * @param string $label
      */
-    public function __construct(\App\Domain\Model\Category $category, string $label)
+    public function __construct(string $label)
     {
         parent::__construct();
-        $this->setCategory($category);
         $this->setLabel($label);
     }
 
@@ -64,23 +62,6 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     }
 
     /**
-     * Returns the Category object bound to this object via the category_id column.
-     */
-    public function getCategory() : \App\Domain\Model\Category
-    {
-        return $this->getRef('from__category_id__to__table__categories__columns__id', 'items');
-    }
-
-    /**
-     * The setter for the Category object bound to this object via the category_id
-     * column.
-     */
-    public function setCategory(\App\Domain\Model\Category $object) : void
-    {
-        $this->setRef('from__category_id__to__table__categories__columns__id', $object, 'items');
-    }
-
-    /**
      * The getter for the "label" column.
      *
      * @return string
@@ -101,6 +82,85 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     }
 
     /**
+     * Returns the list of Category associated to this bean via the categories_items pivot table.
+     *
+     * @return \App\Domain\Model\Category[]
+     */
+    public function getCategories() : array
+    {
+        return $this->_getRelationships('categories_items.item_id');
+    }
+
+    /**
+     * Adds a relationship with Category associated to this bean via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Category $category
+     */
+    public function addCategory(\App\Domain\Model\Category $category) : void
+    {
+        $this->addRelationship('categories_items', $category);
+    }
+
+    /**
+     * Deletes the relationship with Category associated to this bean via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Category $category
+     */
+    public function removeCategory(\App\Domain\Model\Category $category) : void
+    {
+        $this->_removeRelationship('categories_items', $category);
+    }
+
+    /**
+     * Returns whether this bean is associated with Category via the categories_items pivot table.
+     *
+     * @param \App\Domain\Model\Category $category
+     * @return bool
+     */
+    public function hasCategory(\App\Domain\Model\Category $category) : bool
+    {
+        return $this->hasRelationship('categories_items.item_id', $category);
+    }
+
+    /**
+     * Sets all relationships with Category associated to this bean via the categories_items pivot table.
+     * Exiting relationships will be removed and replaced by the provided relationships.
+     *
+     * @param \App\Domain\Model\Category[] $categorys
+     * @return void
+     */
+    public function setCategories(array $categorys) : void
+    {
+        $this->setRelationships('categories_items.item_id', $categorys);
+    }
+
+    /**
+     * Get the paths used for many to many relationships methods.
+     *
+     * @internal
+     */
+    public function _getManyToManyRelationshipDescriptor(string $pathKey) : \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor
+    {
+        switch ($pathKey) {
+            case 'categories_items.item_id':
+                return new \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor('categories', 'categories_items', ['id'], ['category_id'], ['item_id']);
+            default:
+                return parent::_getManyToManyRelationshipDescriptor($pathKey);
+        }
+    }
+
+    /**
+     * Returns the list of keys supported for many to many relationships
+     *
+     * @internal
+     * @return string[]
+     */
+    public function _getManyToManyRelationshipDescriptorKeys() : array
+    {
+        return array_merge(parent::_getManyToManyRelationshipDescriptorKeys(), ['categories_items.item_id']);
+    }
+
+    /**
      * Internal method used to retrieve the list of foreign keys attached to this bean.
      */
     protected static function getForeignKeys(string $tableName) : \TheCodingMachine\TDBM\Schema\ForeignKeys
@@ -108,15 +168,7 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
         if ($tableName === 'items') {
             if (self::$foreignKeys === null) {
                 self::$foreignKeys = new ForeignKeys([
-                    'from__category_id__to__table__categories__columns__id' => [
-                        'foreignTable' => 'categories',
-                        'localColumns' => [
-                            'category_id'
-                        ],
-                        'foreignColumns' => [
-                            'id'
-                        ]
-                    ]
+
                 ]);
             }
             return self::$foreignKeys;
@@ -135,12 +187,12 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     {
         $array = [];
         $array['id'] = $this->getId();
-        if ($stopRecursion) {
-            $array['category'] = ['id' => $this->getCategory()->getId()];
-        } else {
-            $array['category'] = $this->getCategory()->jsonSerialize(true);
-        }
         $array['label'] = $this->getLabel();
+        if (!$stopRecursion) {
+            $array['categories'] = array_map(function (Category $object) {
+                return $object->jsonSerialize(true);
+            }, $this->getCategories());
+        };
         return $array;
     }
 
@@ -155,17 +207,10 @@ abstract class BaseItem extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
         return [ 'items' ];
     }
 
-    /**
-     * Method called when the bean is removed from database.
-     */
-    public function onDelete() : void
-    {
-        parent::onDelete();
-        $this->setRef('from__category_id__to__table__categories__columns__id', null, 'items');
-    }
-
     public function __clone()
     {
+        $this->getCategories();
+
         parent::__clone();
     }
 }
