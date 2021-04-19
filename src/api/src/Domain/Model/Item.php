@@ -18,6 +18,7 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  * @Type
  * @SourceField(name="id", outputType="ID")
  * @SourceField(name="label")
+ * @SourceField(name="categories")
  */
 class Item extends BaseItem
 {

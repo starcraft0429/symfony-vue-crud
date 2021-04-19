@@ -11,3 +11,14 @@ export const CategoriesQuery = gql`
     }
   }
 `
+export const AllCategoriesQuery = gql`
+  query categories {
+    categories {
+      items {
+        id
+        label
+      }
+      count
+    }
+  }
+`

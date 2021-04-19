@@ -23,6 +23,22 @@
             </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
+        <b-col md="6">
+          <b-form-group
+            id="input-group-categories"
+            label="Categories"
+            label-for="input-categories"
+          >
+            <b-form-select
+              v-model="form.categories"
+              :options="allCategories"
+              multiple
+              value-field="id"
+              text-field="label"
+              :select-size="4"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
       </b-form-row>
       <b-button type="submit" variant="primary">
         {{ $t('common.create') }}
@@ -37,16 +53,30 @@ import { Form } from '@/mixins/form'
 import { Roles } from '@/mixins/roles'
 import { Locales } from '@/mixins/locales'
 import { CreateItemMutation } from '@/graphql/items/create_item.mutation'
+import { AllCategoriesQuery } from '@/graphql/categories/categories.query'
 import { GlobalOverlay } from '@/mixins/global-overlay'
 import { GenericToast } from '@/mixins/generic-toast'
 
 export default {
   components: { ErrorsList },
   mixins: [Form, Roles, Locales, GlobalOverlay, GenericToast],
+  async asyncData(context) {
+    try {
+      const result = await context.app.$graphql.request(AllCategoriesQuery)
+
+      return {
+        allCategories: result.categories.items,
+      }
+    } catch (e) {
+      context.error(e)
+    }
+  },
   data() {
     return {
+      allCategories: [],
       form: {
         label: '',
+        categories: [],
       },
     }
   },
@@ -54,10 +84,12 @@ export default {
     async onSubmit() {
       this.resetFormErrors()
       this.displayGlobalOverlay()
-
       try {
         await this.$graphql.request(CreateItemMutation, {
           label: this.form.label,
+          categories: this.form.categories.map((category) => {
+            return { id: category }
+          }),
         })
 
         this.genericSuccessToast()
