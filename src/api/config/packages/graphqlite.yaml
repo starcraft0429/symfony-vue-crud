@@ -1,0 +1,8 @@
+# Read more about GraphQLite available options at: https://graphqlite.thecodingmachine.io/docs/symfony-bundle
+graphqlite:
+  namespace:
+    controllers: App\UseCase\
+    types:
+      - App\Domain\Model\
+      - App\Domain\Dao\
+      - App\Domain\Enum\
