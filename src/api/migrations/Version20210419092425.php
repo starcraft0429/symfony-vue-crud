@@ -30,7 +30,7 @@ final class Version20210419092425 extends AbstractMigration
 
         $db->table('items')->id()
             ->column('label')->string(255)->notNull();
-            
+
         $db->junctionTable('categories', 'items');
     }
 

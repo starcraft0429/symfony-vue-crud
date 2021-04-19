@@ -7,7 +7,6 @@ namespace App\UseCase\Category;
 use App\Domain\Dao\CategoryDao;
 use App\Domain\Model\Category;
 use App\Domain\Throwable\InvalidModel;
-use App\Domain\Throwable\InvalidStorable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class UpdateCategory
@@ -22,7 +21,6 @@ final class UpdateCategory
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      *
      * @Mutation
      */
@@ -38,7 +36,6 @@ final class UpdateCategory
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      */
     public function update(
         Category $category,

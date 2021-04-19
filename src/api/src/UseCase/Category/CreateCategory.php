@@ -7,7 +7,6 @@ namespace App\UseCase\Category;
 use App\Domain\Dao\CategoryDao;
 use App\Domain\Model\Category;
 use App\Domain\Throwable\InvalidModel;
-use App\Domain\Throwable\InvalidStorable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class CreateCategory
@@ -22,7 +21,6 @@ final class CreateCategory
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      *
      * @Mutation
      */
@@ -36,7 +34,6 @@ final class CreateCategory
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      */
     public function create(
         string $label

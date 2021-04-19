@@ -6,9 +6,7 @@ namespace App\UseCase\Item;
 
 use App\Domain\Dao\ItemDao;
 use App\Domain\Model\Item;
-use App\Domain\Model\Category;
 use App\Domain\Throwable\InvalidModel;
-use App\Domain\Throwable\InvalidStorable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class CreateItem
@@ -23,26 +21,22 @@ final class CreateItem
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      *
      * @Mutation
      */
     public function createItem(
-        string $label,
-        Category $category
+        string $label
     ): Item {
-        return $this->create($label, $category);
+        return $this->create($label);
     }
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      */
     public function create(
-        string $label,
-        Category $category
+        string $label
     ): Item {
-        $item = new Item($category, $label);
+        $item = new Item($label);
 
         $this->itemDao->validate($item);
         $this->itemDao->save($item);

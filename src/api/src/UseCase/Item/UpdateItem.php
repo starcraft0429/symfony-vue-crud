@@ -7,7 +7,6 @@ namespace App\UseCase\Item;
 use App\Domain\Dao\ItemDao;
 use App\Domain\Model\Item;
 use App\Domain\Throwable\InvalidModel;
-use App\Domain\Throwable\InvalidStorable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class UpdateItem
@@ -22,7 +21,6 @@ final class UpdateItem
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      *
      * @Mutation
      */
@@ -38,7 +36,6 @@ final class UpdateItem
 
     /**
      * @throws InvalidModel
-     * @throws InvalidStorable
      */
     public function update(
         Item $item,
