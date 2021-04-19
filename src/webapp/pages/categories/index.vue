@@ -20,7 +20,7 @@
         <div class="m-auto mr-sm-0 ml-sm-auto">
           <b-button
             variant="primary"
-            :to="localePath({ name: 'category-create' })"
+            :to="localePath({ name: 'categories-create' })"
             >{{ $t('common.create') }}</b-button
           >
         </div>
@@ -45,7 +45,7 @@
             :aria-label="$t('common.edit')"
             :to="
               localePath({
-                name: 'category-id',
+                name: 'categories-id',
                 params: { id: data.item.id },
               })
             "

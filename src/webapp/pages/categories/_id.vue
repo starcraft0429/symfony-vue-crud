@@ -106,7 +106,7 @@ export default {
         })
 
         this.genericSuccessToast()
-        this.$router.push(this.localePath({ name: 'category' }))
+        this.$router.push(this.localePath({ name: 'categories' }))
       } catch (e) {
         this.$nuxt.error(e)
       } finally {

@@ -15,16 +15,16 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item
-          :to="localePath({ name: 'category' })"
-          :active="$route.path === localePath({ name: 'category' })"
+          :to="localePath({ name: 'categories' })"
+          :active="$route.path === localePath({ name: 'categories' })"
         >
           {{ $t('common.nav.categories') }}
         </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>
         <b-nav-item
-          :to="localePath({ name: 'item' })"
-          :active="$route.path === localePath({ name: 'item' })"
+          :to="localePath({ name: 'items' })"
+          :active="$route.path === localePath({ name: 'items' })"
         >
           {{ $t('common.nav.items') }}
         </b-nav-item>
