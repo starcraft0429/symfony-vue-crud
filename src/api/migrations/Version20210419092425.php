@@ -14,12 +14,12 @@ use TheCodingMachine\FluidSchema\TdbmFluidSchema;
  */
 final class Version20210419092425 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
 
@@ -31,10 +31,9 @@ final class Version20210419092425 extends AbstractMigration
         $db->table('items')->id()
             ->column('label')->string(255)->notNull()
             ->column('category_id')->references('categories')->notNull();
-
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
 

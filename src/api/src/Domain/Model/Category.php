@@ -14,7 +14,7 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
  * The Category class maps the 'categories' table in database.
- * 
+ *
  * @Type
  * @SourceField(name="id", outputType="ID")
  * @SourceField(name="label")

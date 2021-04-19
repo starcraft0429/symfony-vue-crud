@@ -14,7 +14,7 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
  * The Item class maps the 'items' table in database.
- * 
+ *
  * @Type
  * @SourceField(name="id", outputType="ID")
  * @SourceField(name="label")

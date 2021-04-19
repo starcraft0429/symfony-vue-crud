@@ -43,7 +43,6 @@ import { GenericToast } from '@/mixins/generic-toast'
 export default {
   components: { ErrorsList },
   mixins: [Form, Roles, Locales, GlobalOverlay, GenericToast],
-  layout: 'dashboard',
   data() {
     return {
       form: {

@@ -52,6 +52,14 @@
           >
             <b-icon icon="pencil"></b-icon>
           </b-button>
+          <b-button
+            size="sm"
+            variant="danger"
+            :aria-label="$t('common.delete')"
+            @click="onDelete(data.item.id)"
+          >
+            <b-icon icon="trash"></b-icon>
+          </b-button>
         </template>
         <template #table-busy>
           <div class="text-center my-2">
@@ -76,11 +84,12 @@ import { Form } from '@/mixins/form'
 import { List, defaultItemsPerPage, calculateOffset } from '@/mixins/list'
 import { Roles } from '@/mixins/roles'
 import { CategoriesQuery } from '@/graphql/categories/categories.query'
-import { Images } from '@/mixins/images'
+import { DeleteCategoryMutation } from '@/graphql/categories/delete_category.mutation'
+import { GlobalOverlay } from '@/mixins/global-overlay'
+import { GenericToast } from '@/mixins/generic-toast'
 
 export default {
-  mixins: [Form, List, Roles, Images],
-  layout: 'dashboard',
+  mixins: [Form, List, Roles, GlobalOverlay, GenericToast],
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(CategoriesQuery, {
@@ -134,6 +143,20 @@ export default {
         this.isLoading = false
       } catch (e) {
         this.$nuxt.error(e)
+      }
+    },
+    async onDelete(id) {
+      this.displayGlobalOverlay()
+
+      try {
+        await this.$graphql.request(DeleteCategoryMutation, { id })
+
+        this.genericSuccessToast()
+        this.$router.push(this.localePath({ name: 'category' }))
+      } catch (e) {
+        this.$nuxt.error(e)
+      } finally {
+        this.hideGlobalOverlay()
       }
     },
   },

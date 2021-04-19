@@ -111,6 +111,7 @@
         "deptrac": "deptrac",
         "pest": "XDEBUG_MODE=coverage pest --coverage",
         "phpstan": "phpstan analyse src/ -c phpstan.neon --level=max --no-progress -vvv --memory-limit=1024M",
-        "yaml-lint": "yaml-lint config translations"
+        "yaml-lint": "yaml-lint config translations",
+        "lint": "composer csfix && composer cscheck && composer phpstan && composer deptrac && composer yaml-lint"
     }
 }
