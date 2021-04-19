@@ -1,5 +1,16 @@
 schema:
   tables:
+    categories:
+      columns:
+        id:
+          primary_key: true
+          type: integer
+          not_null: true
+          auto_increment: true
+        label:
+          type: string
+          length: 255
+          not_null: true
     doctrine_migration_versions:
       columns:
         version:
@@ -11,6 +22,31 @@ schema:
           type: datetime
           length: 0
         execution_time: integer
+    items:
+      columns:
+        id:
+          primary_key: true
+          type: integer
+          not_null: true
+          auto_increment: true
+        category_id:
+          type: integer
+          not_null: true
+        label:
+          type: string
+          length: 255
+          not_null: true
+      indexes:
+        IDX_E11EE94D12469DE2:
+          column: category_id
+          lengths:
+            - null
+      foreign_keys:
+        FK_E11EE94D12469DE2:
+          column: category_id
+          references: categories
+          onDelete: null
+          onUpdate: null
     reset_password_tokens:
       columns:
         id:
