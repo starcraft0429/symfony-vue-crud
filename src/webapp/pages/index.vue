@@ -7,7 +7,7 @@
       </h1>
     </b-row>
     <b-row class="justify-content-center">
-      <p class="lead">This is just simple CRUD app for Items and Categories</p>
+      <p class="lead">{{ $t('pages.home.message') }}</p>
     </b-row>
   </div>
 </template>

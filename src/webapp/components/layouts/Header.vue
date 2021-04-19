@@ -18,7 +18,15 @@
           :to="localePath({ name: 'category' })"
           :active="$route.path === localePath({ name: 'category' })"
         >
-          Categories
+          {{ $t('common.nav.categories') }}
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item
+          :to="localePath({ name: 'item' })"
+          :active="$route.path === localePath({ name: 'item' })"
+        >
+          {{ $t('common.nav.items') }}
         </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>
