@@ -93,7 +93,7 @@ export default {
         })
 
         this.genericSuccessToast()
-        this.$router.push(this.localePath({ name: 'items' }))
+        this.$router.push(this.localePath({ name: 'categories' }))
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {
