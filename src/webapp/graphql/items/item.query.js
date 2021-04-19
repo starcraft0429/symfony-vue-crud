@@ -5,6 +5,10 @@ export const ItemQuery = gql`
     item(item1: { id: $id }) {
       id
       label
+      categories {
+        id
+        label
+      }
     }
   }
 `

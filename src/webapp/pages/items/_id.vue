@@ -24,6 +24,22 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
+          <b-col md="6">
+            <b-form-group
+              id="input-group-categories"
+              label="Categories"
+              label-for="input-categories"
+            >
+              <b-form-select
+                v-model="form.categories"
+                :options="allCategories"
+                multiple
+                value-field="id"
+                text-field="label"
+                :select-size="4"
+              ></b-form-select>
+            </b-form-group>
+          </b-col>
         </b-form-row>
         <b-button type="submit" variant="primary">
           {{ $t('common.update') }}
@@ -53,6 +69,7 @@ import { Images } from '@/mixins/images'
 import { GenericToast } from '@/mixins/generic-toast'
 import ErrorsList from '@/components/forms/ErrorsList'
 import { DeleteItemMutation } from '@/graphql/items/delete_item.mutation'
+import { AllCategoriesQuery } from '@/graphql/categories/categories.query'
 
 export default {
   components: { ErrorsList },
@@ -62,10 +79,14 @@ export default {
       const result = await context.app.$graphql.request(ItemQuery, {
         id: context.params.id,
       })
-
+      const allCategories = await context.app.$graphql.request(
+        AllCategoriesQuery
+      )
       return {
+        allCategories: allCategories.categories.items,
         form: {
           label: result.item.label,
+          categories: result.item.categories.map((category) => category.id),
         },
       }
     } catch (e) {
@@ -74,8 +95,10 @@ export default {
   },
   data() {
     return {
+      allCategories: [],
       form: {
         label: '',
+        categories: [],
       },
     }
   },
@@ -88,6 +111,9 @@ export default {
         await this.$graphql.request(UpdateItemMutation, {
           id: this.$route.params.id,
           label: this.form.label,
+          categories: this.form.categories.map((category) => {
+            return { id: category }
+          }),
         })
 
         this.genericSuccessToast()

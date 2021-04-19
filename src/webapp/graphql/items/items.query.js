@@ -6,6 +6,10 @@ export const ItemsQuery = gql`
       items(limit: $limit, offset: $offset) {
         id
         label
+        categories {
+          id
+          label
+        }
       }
       count
     }
