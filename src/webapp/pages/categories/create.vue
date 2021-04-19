@@ -1,5 +1,6 @@
 <template>
   <b-card>
+    <h1>{{ $t('common.category') }} {{ $t('common.create') }}</h1>
     <b-form @submit.stop.prevent="onSubmit">
       <b-form-row>
         <b-col md="6">
@@ -41,6 +42,7 @@ import { GlobalOverlay } from '@/mixins/global-overlay'
 import { GenericToast } from '@/mixins/generic-toast'
 
 export default {
+  name: 'CategoryCreate',
   components: { ErrorsList },
   mixins: [Form, Roles, Locales, GlobalOverlay, GenericToast],
   data() {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $t('common.category') }} {{ $t('common.edit') }}</h1>
     <b-card>
       <b-form @submit.stop.prevent="onSubmit">
         <b-form-row>
@@ -55,6 +56,7 @@ import ErrorsList from '@/components/forms/ErrorsList'
 import { DeleteCategoryMutation } from '@/graphql/categories/delete_category.mutation'
 
 export default {
+  name: 'CategoryEdit',
   components: { ErrorsList },
   mixins: [Form, Roles, Locales, GlobalOverlay, Auth, Images, GenericToast],
   async asyncData(context) {
@@ -91,6 +93,7 @@ export default {
         })
 
         this.genericSuccessToast()
+        this.$router.push(this.localePath({ name: 'items' }))
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {

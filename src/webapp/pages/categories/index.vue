@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $t('common.nav.categories') }}</h1>
     <b-card>
       <b-form inline @submit.stop.prevent>
         <label class="sr-only" for="inline-form-input-search">{{
@@ -80,6 +81,7 @@ import { GlobalOverlay } from '@/mixins/global-overlay'
 import { GenericToast } from '@/mixins/generic-toast'
 
 export default {
+  name: 'CategoryList',
   mixins: [Form, List, Roles, GlobalOverlay, GenericToast],
   async asyncData(context) {
     try {

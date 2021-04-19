@@ -1,6 +1,8 @@
 export default {
   // All translations that you use in different places.
   common: {
+    category: 'Catégory',
+    item: 'Objet',
     email: {
       label: 'Email',
       label_required: 'Email *',

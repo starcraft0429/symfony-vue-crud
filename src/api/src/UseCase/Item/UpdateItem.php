@@ -55,6 +55,7 @@ final class UpdateItem
         foreach($originalCategories as $originalCategory) {
             $item->removeCategory($originalCategory);
         }
+        $this->itemDao->save($item);
 
         foreach($categories as $category) {
             $item->addCategory($category);

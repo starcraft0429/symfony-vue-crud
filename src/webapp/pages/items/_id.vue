@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $t('common.item') }} {{ $t('common.edit') }}</h1>
     <b-card>
       <b-form @submit.stop.prevent="onSubmit">
         <b-form-row>
@@ -72,6 +73,7 @@ import { DeleteItemMutation } from '@/graphql/items/delete_item.mutation'
 import { AllCategoriesQuery } from '@/graphql/categories/categories.query'
 
 export default {
+  name: 'ItemEdit',
   components: { ErrorsList },
   mixins: [Form, Roles, Locales, GlobalOverlay, Auth, Images, GenericToast],
   async asyncData(context) {
@@ -117,6 +119,7 @@ export default {
         })
 
         this.genericSuccessToast()
+        this.$router.push(this.localePath({ name: 'items' }))
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {
