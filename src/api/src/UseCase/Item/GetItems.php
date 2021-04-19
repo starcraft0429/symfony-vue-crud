@@ -26,6 +26,6 @@ final class GetItems
     public function items(
         ?string $search = null
     ): ResultIterator {
-        return $this->itemDao->findAll();
+        return $this->itemDao->search($search);
     }
 }
