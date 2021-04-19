@@ -36,7 +36,7 @@ import ErrorsList from '@/components/forms/ErrorsList'
 import { Form } from '@/mixins/form'
 import { Roles } from '@/mixins/roles'
 import { Locales } from '@/mixins/locales'
-import { CreateCategoryMutation } from '@/graphql/categories/create_category.mutation'
+import { CreateItemMutation } from '@/graphql/items/create_item.mutation'
 import { GlobalOverlay } from '@/mixins/global-overlay'
 import { GenericToast } from '@/mixins/generic-toast'
 
@@ -56,13 +56,13 @@ export default {
       this.displayGlobalOverlay()
 
       try {
-        await this.$graphql.request(CreateCategoryMutation, {
+        await this.$graphql.request(CreateItemMutation, {
           label: this.form.label,
         })
 
         this.genericSuccessToast()
 
-        this.$router.push(this.localePath({ name: 'categories' }))
+        this.$router.push(this.localePath({ name: 'items' }))
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {
