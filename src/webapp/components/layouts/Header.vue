@@ -15,6 +15,14 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item
+          :to="localePath({ name: 'category' })"
+          :active="$route.path === localePath({ name: 'category' })"
+        >
+          Categories
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item
           v-if="isAuthenticated"
           :to="localePath({ name: 'dashboard' })"
           :active="$route.path === localePath({ name: 'dashboard' })"

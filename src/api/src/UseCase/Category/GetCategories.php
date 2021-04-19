@@ -31,6 +31,6 @@ final class GetCategories
     public function categories(
         ?string $search = null
     ): ResultIterator {
-        return $this->categoryDao->findAll();
+        return $this->categoryDao->search($search);
     }
 }
